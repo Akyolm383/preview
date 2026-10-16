@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatTurkishText } from "@/lib/turkish";
+import { detectPlatformFromUserAgent, getThemeConfig } from "@/lib/platform";
 
 export const runtime = "nodejs";
 
@@ -11,19 +12,26 @@ export async function GET(req: NextRequest) {
     // Extract title: either ?title=, ?text=, or first raw key
     let title = searchParams.get("title") || searchParams.get("text") || "";
     let subtitle = searchParams.get("sub") || searchParams.get("subtitle") || searchParams.get("alt") || "";
-    const theme = searchParams.get("theme") || "blurple";
+
+    // Platform & Theme auto-detection from crawler User-Agent or explicit param
+    let themeParam = searchParams.get("theme");
+    let theme = themeParam;
+    if (!theme || theme === "auto") {
+      const ua = req.headers.get("user-agent") || "";
+      theme = detectPlatformFromUserAgent(ua);
+    }
 
     // If no explicit title/text query param was provided, check if first key is raw text
     if (!title) {
       const keys = Array.from(searchParams.keys());
-      if (keys.length > 0 && keys[0]) {
+      if (keys.length > 0 && keys[0] && keys[0] !== "theme" && keys[0] !== "tr") {
         title = keys[0];
       }
     }
 
     if (!title) {
       title = "p.ramazanakyol.me";
-      subtitle = subtitle || "Discord Dynamic Preview Generator";
+      subtitle = subtitle || "Universal Social Dynamic Preview Generator";
     }
 
     // Convert '+' signs to spaces for clean URL syntax
@@ -35,20 +43,9 @@ export async function GET(req: NextRequest) {
     title = formatTurkishText(title, isTr);
     subtitle = formatTurkishText(subtitle, isTr);
 
-    // Theme color mapping
-    let accentColor = "#5865F2"; // Blurple
-    let glowColor = "rgba(88, 101, 242, 0.35)";
-
-    if (theme === "crimson" || theme === "red") {
-      accentColor = "#ED4245";
-      glowColor = "rgba(237, 66, 69, 0.35)";
-    } else if (theme === "emerald" || theme === "green") {
-      accentColor = "#57F287";
-      glowColor = "rgba(87, 242, 135, 0.35)";
-    } else if (theme === "gold" || theme === "yellow") {
-      accentColor = "#FEE75C";
-      glowColor = "rgba(254, 231, 92, 0.35)";
-    }
+    // Visual theme tokens from detected or selected theme
+    const themeConfig = getThemeConfig(theme);
+    const { accentColor, glowColor, badgeLabel, footerLabel } = themeConfig;
 
     // Dynamic font sizing
     let fontSize = 84;
@@ -129,7 +126,7 @@ export async function GET(req: NextRequest) {
                   textTransform: "uppercase",
                 }}
               >
-                Social Link Preview
+                {badgeLabel}
               </span>
             </div>
           </div>
@@ -198,7 +195,7 @@ export async function GET(req: NextRequest) {
                 fontWeight: 500,
               }}
             >
-              Universal Embed • Edge Rendered
+              {footerLabel}
             </span>
             <span
               style={{

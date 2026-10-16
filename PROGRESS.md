@@ -48,15 +48,26 @@
    - **Discord:** Orijinal karanlık tema, avatar, bot etiketi, renkli sol şeritli kart.
    - **WhatsApp:** Orijinal koyu tema konuşma balonu, bağlantı kartı, alan adı etiketi ve çift mavi tik.
    - **X (Twitter):** 16px radius'lu büyük önizleme kartı ve gönderi simülasyonu.
-   - Türkçe karakter & Instagram mobil klavye ipucu paneli eklendi.
+   - **Instagram:** Instagram Story & DM önizleme kartı ve pembe/magenta rozet desteği.
+   - Otomatik tema modu ("✨ Otomatik Platform Teması") ile varsayılan olarak linklerde ek tema parametresi olmadan her platforma kendi rengi atanır.
+
+5. **Akıllı Platform & Crawler Algılama Motoru (`src/lib/platform.ts`):**
+   - Sunucu tarafında `next/headers` üzerinden `user-agent` header'ı taranarak gelen bot tespit edilir:
+     - `Discordbot` &rarr; Discord Blurple (#5865F2)
+     - `WhatsApp` &rarr; WhatsApp Emerald Green (#25D366)
+     - `Twitterbot` &rarr; X Crisp White/Monochrome (#FFFFFF / #000000)
+     - `facebookexternalhit / Instagram` &rarr; Instagram Magenta/Coral (#E1306C)
+     - `TelegramBot` &rarr; Telegram Sky Blue (#24A1DE)
+   - Kullanıcı dilerse `?theme=crimson` veya `?theme=emerald` ile özel rengini sabitleyebilir; aksi takdirde tamamen otomatik çalışır.
 
 ---
 
 ## 🛠️ 3. Platform Uyumluluk Detayları
-- **WhatsApp:** Meta Graph Scraper'ın beklediği `<300KB` boyut ve mutlak URL kuralı sağlandı.
-- **X (Twitter):** `summary_large_image` kart tipiyle tam genişlikli görsel standardı sağlandı.
+- **WhatsApp:** Meta Graph Scraper'ın beklediği `<300KB` boyut ve mutlak URL kuralı sağlandı. Otomatik yeşil tema.
+- **X (Twitter):** `summary_large_image` kart tipiyle tam genişlikli görsel standardı sağlandı. Otomatik siyah-beyaz minimalist tema.
 - **Instagram (DM / Hikaye Çıkartması):** 
-  - Elle yazımda ASCII kısayolları (`s_eker`) veya web sitesinden tek tıkla kopyalama (`/%C5%9Feker`) ile link kırılma sorunu tamamen giderildi.
+  - Elle yazımda ASCII kısayolları (`s_eker`) veya web sitesinden tek tıkla kopyalama (`/%C5%9Feker`) ile link kırılma sorunu tamamen giderildi. Otomatik Instagram magenta teması.
+- **Discord:** Orijinal Blurple teması ve mor sol şerit.
 - **Telegram & LinkedIn:** Standart Open Graph etiketleriyle doğrudan uyumlu.
 
 ---

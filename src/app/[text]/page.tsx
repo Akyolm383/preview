@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { ArrowLeft, Copy, Download, ExternalLink, Sparkles } from "lucide-react";
 import ClientDynamicView from "./ClientDynamicView";
 import { formatTurkishText } from "@/lib/turkish";
+import { detectPlatformFromUserAgent, getThemeConfig } from "@/lib/platform";
 
 function safeDecode(val: string): string {
   try {
@@ -45,13 +47,15 @@ export async function generateMetadata({
   const title = formatTurkishText(rawTitle, isTr);
   const subtitle = formatTurkishText(rawSubtitle, isTr);
 
-  const theme = (resolvedSearchParams.theme as string) || "blurple";
-  const themeHex =
-    theme === "crimson"
-      ? "#ED4245"
-      : theme === "emerald"
-      ? "#57F287"
-      : "#5865F2";
+  // Auto-detect social platform crawler from User-Agent unless manually overridden
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const detectedTheme = detectPlatformFromUserAgent(userAgent);
+
+  const themeParam = (resolvedSearchParams.theme as string);
+  const theme = (themeParam && themeParam !== "auto") ? themeParam : detectedTheme;
+  const themeConfig = getThemeConfig(theme);
+  const themeHex = themeConfig.themeHex;
 
   const cleanSlug = encodeURIComponent(rawTitle.replace(/\s+/g, "+"));
   const cleanSub = rawSubtitle ? encodeURIComponent(rawSubtitle.replace(/\s+/g, "+")) : "";
@@ -126,7 +130,14 @@ export default async function DynamicTextPage({
   const title = formatTurkishText(rawTitle, isTr);
   const subtitle = formatTurkishText(rawSubtitle, isTr);
 
-  const theme = (resolvedSearchParams.theme as string) || "blurple";
+  // Auto-detect social platform crawler or use parameter
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const detectedTheme = detectPlatformFromUserAgent(userAgent);
+
+  const themeParam = (resolvedSearchParams.theme as string);
+  const theme = (themeParam && themeParam !== "auto") ? themeParam : detectedTheme;
+
   const ogImageUrl = `/og.png?title=${encodeURIComponent(title)}${
     subtitle ? `&sub=${encodeURIComponent(subtitle)}` : ""
   }&theme=${theme}`;

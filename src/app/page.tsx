@@ -14,13 +14,19 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { formatTurkishText } from "@/lib/turkish";
+import { getThemeConfig } from "@/lib/platform";
 
 export default function Home() {
   const [slugText, setSlugText] = useState("siktir");
   const [subtitle, setSubtitle] = useState("");
-  const [theme, setTheme] = useState<"blurple" | "crimson" | "emerald">("blurple");
-  const [platform, setPlatform] = useState<"discord" | "whatsapp" | "twitter">("discord");
+  const [theme, setTheme] = useState<string>("auto");
+  const [platform, setPlatform] = useState<"discord" | "whatsapp" | "twitter" | "instagram">("discord");
   const [copied, setCopied] = useState(false);
+
+  // Active theme is automatically determined by platform tab unless user locks a specific theme
+  const effectiveTheme = theme === "auto" ? platform : theme;
+  const themeConfig = getThemeConfig(effectiveTheme);
+  const spineColor = themeConfig.spineClass;
 
   // Compute shareable URL with + for spaces
   const domain = "p.ramazanakyol.me";
@@ -38,10 +44,10 @@ export default function Home() {
   let shareablePath = `/${cleanSlug}`;
   if (cleanSubtitle) {
     shareablePath += `?${cleanSubtitle}`;
-    if (theme !== "blurple") {
+    if (theme !== "auto") {
       shareablePath += `&theme=${theme}`;
     }
-  } else if (theme !== "blurple") {
+  } else if (theme !== "auto") {
     shareablePath += `?theme=${theme}`;
   }
 
@@ -50,7 +56,7 @@ export default function Home() {
   // Image source for real-time preview (pass formatted string so + becomes space in preview)
   const liveOgImageUrl = `/og.png?title=${cleanSlug}${
     cleanSubtitle ? `&sub=${cleanSubtitle}` : ""
-  }&theme=${theme}`;
+  }&theme=${effectiveTheme}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(fullShareUrl);
@@ -70,13 +76,6 @@ export default function Home() {
     { text: "siktir", sub: "siktirme" },
     { text: "tamam abi", sub: "anladık" },
   ];
-
-  const spineColor =
-    theme === "crimson"
-      ? "bg-crimson"
-      : theme === "emerald"
-      ? "bg-emerald"
-      : "bg-blurple";
 
   return (
     <main className="min-h-screen bg-obsidian text-text-high flex flex-col justify-between selection:bg-blurple selection:text-white">
@@ -188,49 +187,81 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Theme Color Selector */}
+              {/* Theme Mode Selector */}
               <div>
-                <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted mb-2">
-                  Tema Rengi
-                </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted">
+                    Tema Modu
+                  </label>
+                  <span className="text-[10px] font-mono text-emerald flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    {theme === "auto" ? "Otomatik Algılama Açık" : "Özel Tema Sabit"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setTheme("auto")}
+                    className={`col-span-2 sm:col-span-4 flex items-center justify-center gap-2 py-2 px-3 rounded text-xs font-medium border transition-all ${
+                      theme === "auto"
+                        ? "bg-emerald/15 border-emerald text-emerald font-semibold shadow-glow-emerald"
+                        : "bg-surface-card border-surface-border text-text-sec hover:text-white"
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>✨ Otomatik Platform Teması (Discord / WhatsApp / X / Instagram)</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setTheme("blurple")}
-                    className={`flex items-center justify-center gap-2 py-2 px-3 rounded text-xs font-medium border transition-all ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
                       theme === "blurple"
                         ? "bg-blurple/20 border-blurple text-white shadow-glow"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-blurple" />
-                    <span>Blurple</span>
+                    <span className="w-2 h-2 rounded-full bg-blurple" />
+                    <span>Discord</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setTheme("crimson")}
-                    className={`flex items-center justify-center gap-2 py-2 px-3 rounded text-xs font-medium border transition-all ${
-                      theme === "crimson"
-                        ? "bg-crimson/20 border-crimson text-white shadow-glow-crimson"
+                    onClick={() => setTheme("whatsapp")}
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                      theme === "whatsapp"
+                        ? "bg-[#25D366]/20 border-[#25D366] text-[#25D366] shadow-glow-emerald"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-crimson" />
-                    <span>Crimson</span>
+                    <span className="w-2 h-2 rounded-full bg-[#25D366]" />
+                    <span>WhatsApp</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setTheme("emerald")}
-                    className={`flex items-center justify-center gap-2 py-2 px-3 rounded text-xs font-medium border transition-all ${
-                      theme === "emerald"
-                        ? "bg-emerald/20 border-emerald text-white shadow-glow-emerald"
+                    onClick={() => setTheme("twitter")}
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                      theme === "twitter"
+                        ? "bg-white/20 border-white text-white shadow-glow"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
                     }`}
                   >
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald" />
-                    <span>Emerald</span>
+                    <span className="w-2 h-2 rounded-full bg-white" />
+                    <span>X (Twitter)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setTheme("instagram")}
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                      theme === "instagram"
+                        ? "bg-[#E1306C]/20 border-[#E1306C] text-[#E1306C]"
+                        : "bg-surface-card border-surface-border text-text-sec hover:text-white"
+                    }`}
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#E1306C]" />
+                    <span>Instagram</span>
                   </button>
                 </div>
               </div>
@@ -307,7 +338,7 @@ export default function Home() {
           <div className="lg:col-span-7 bg-surface-chat rounded-lg border border-surface-border/60 p-6 shadow-2xl">
             {/* Platform Selector Tabs */}
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-surface-border/40">
-              <div className="flex items-center gap-1.5 bg-surface-1 p-1 rounded-md border border-surface-border">
+              <div className="flex flex-wrap items-center gap-1.5 bg-surface-1 p-1 rounded-md border border-surface-border">
                 <button
                   type="button"
                   onClick={() => setPlatform("discord")}
@@ -341,6 +372,17 @@ export default function Home() {
                 >
                   X (Twitter)
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setPlatform("instagram")}
+                  className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                    platform === "instagram"
+                      ? "bg-[#E1306C] text-white font-semibold"
+                      : "text-text-muted hover:text-white"
+                  }`}
+                >
+                  Instagram
+                </button>
               </div>
 
               <span className="text-[10px] font-mono uppercase tracking-wider bg-surface-1 px-2.5 py-1 rounded text-text-gutter border border-surface-border/60">
@@ -348,7 +390,9 @@ export default function Home() {
                   ? "Discord Rich Embed"
                   : platform === "whatsapp"
                   ? "WhatsApp Graph Card"
-                  : "X Large Summary Card"}
+                  : platform === "twitter"
+                  ? "X Large Summary Card"
+                  : "Instagram Social Card"}
               </span>
             </div>
 
@@ -515,6 +559,52 @@ export default function Home() {
                         {renderedSubtitle}
                       </p>
                     )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* --- 4. INSTAGRAM SIMULATOR VIEW --- */}
+            {platform === "instagram" && (
+              <div className="p-4 rounded-lg bg-black border border-[#262626]">
+                <div className="max-w-md ml-auto bg-[#262626] text-white rounded-2xl p-2.5 shadow-md relative">
+                  {/* Instagram DM Link Card */}
+                  <div className="rounded-xl overflow-hidden border border-white/10 mb-1.5 bg-[#121212]">
+                    <div className="aspect-[1200/630] w-full bg-black relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={liveOgImageUrl}
+                        alt={slugText}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#E1306C]" />
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-[#E1306C] font-mono">
+                          Instagram Story &amp; DM
+                        </span>
+                      </div>
+                      <h4 className="text-sm font-bold text-white leading-tight">
+                        {renderedTitle || "siktir"}
+                      </h4>
+                      {renderedSubtitle && (
+                        <p className="text-xs text-[#a8a8a8] line-clamp-1 mt-0.5">
+                          {renderedSubtitle}
+                        </p>
+                      )}
+                      <p className="text-[11px] text-[#737373] font-mono mt-1">
+                        p.ramazanakyol.me
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs font-mono text-[#E1306C] underline break-all px-1">
+                    {fullShareUrl}
+                  </p>
+
+                  <div className="flex items-center justify-end text-[10px] text-white/50 mt-1 px-1">
+                    <span>Gönderildi • 17:01</span>
                   </div>
                 </div>
               </div>

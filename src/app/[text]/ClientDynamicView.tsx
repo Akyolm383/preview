@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Check, Copy, Download, Share2, Sparkles } from "lucide-react";
+import { getThemeConfig } from "@/lib/platform";
 
 interface ClientDynamicViewProps {
   title: string;
@@ -48,19 +49,8 @@ export default function ClientDynamicView({
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const accentColorClass =
-    theme === "crimson"
-      ? "border-crimson text-crimson shadow-glow-crimson"
-      : theme === "emerald"
-      ? "border-emerald text-emerald shadow-glow-emerald"
-      : "border-blurple text-blurple shadow-glow";
-
-  const spineColor =
-    theme === "crimson"
-      ? "bg-crimson"
-      : theme === "emerald"
-      ? "bg-emerald"
-      : "bg-blurple";
+  const themeConfig = getThemeConfig(theme);
+  const spineColor = themeConfig.spineClass;
 
   return (
     <main className="min-h-screen bg-obsidian text-text-high flex flex-col justify-between p-4 md:p-8">
