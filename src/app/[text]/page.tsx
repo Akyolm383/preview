@@ -14,7 +14,8 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const title = decodeURIComponent(resolvedParams.text || "");
+  // Convert '+' syntax to space
+  const title = decodeURIComponent(resolvedParams.text || "").replace(/\+/g, " ").trim();
 
   // Subtitle parsing: supports /siktir?siktirme or /siktir?sub=siktirme
   let subtitle = "";
@@ -28,6 +29,7 @@ export async function generateMetadata({
       subtitle = keys[0];
     }
   }
+  subtitle = decodeURIComponent(subtitle).replace(/\+/g, " ").trim();
 
   const theme = (resolvedSearchParams.theme as string) || "blurple";
   const themeHex =
@@ -72,7 +74,7 @@ export default async function DynamicTextPage({
 }: Props) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const title = decodeURIComponent(resolvedParams.text || "");
+  const title = decodeURIComponent(resolvedParams.text || "").replace(/\+/g, " ").trim();
 
   let subtitle = "";
   if (resolvedSearchParams.sub) {
@@ -85,6 +87,7 @@ export default async function DynamicTextPage({
       subtitle = keys[0];
     }
   }
+  subtitle = decodeURIComponent(subtitle).replace(/\+/g, " ").trim();
 
   const theme = (resolvedSearchParams.theme as string) || "blurple";
   const ogImageUrl = `/api/og?title=${encodeURIComponent(title)}${

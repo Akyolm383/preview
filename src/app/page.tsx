@@ -19,13 +19,22 @@ export default function Home() {
   const [theme, setTheme] = useState<"blurple" | "crimson" | "emerald">("blurple");
   const [copied, setCopied] = useState(false);
 
-  // Compute shareable URL
+  // Compute shareable URL with + for spaces
   const domain = "p.ramazanakyol.me";
-  const encodedSlug = encodeURIComponent(slugText.trim() || "siktir");
+  const toPlusSyntax = (str: string) => {
+    return str
+      .trim()
+      .split(/\s+/)
+      .map((part) => encodeURIComponent(part))
+      .join("+");
+  };
+
+  const cleanSlug = toPlusSyntax(slugText) || "siktir";
+  const cleanSubtitle = toPlusSyntax(subtitle);
   
-  let shareablePath = `/${encodedSlug}`;
-  if (subtitle.trim()) {
-    shareablePath += `?${encodeURIComponent(subtitle.trim())}`;
+  let shareablePath = `/${cleanSlug}`;
+  if (cleanSubtitle) {
+    shareablePath += `?${cleanSubtitle}`;
     if (theme !== "blurple") {
       shareablePath += `&theme=${theme}`;
     }
@@ -35,11 +44,9 @@ export default function Home() {
 
   const fullShareUrl = `https://${domain}${shareablePath}`;
 
-  // Image source for real-time preview
-  const liveOgImageUrl = `/api/og?title=${encodeURIComponent(
-    slugText.trim() || "siktir"
-  )}${
-    subtitle.trim() ? `&sub=${encodeURIComponent(subtitle.trim())}` : ""
+  // Image source for real-time preview (pass formatted string so + becomes space in preview)
+  const liveOgImageUrl = `/api/og?title=${cleanSlug}${
+    cleanSubtitle ? `&sub=${cleanSubtitle}` : ""
   }&theme=${theme}`;
 
   const copyToClipboard = () => {
@@ -52,9 +59,9 @@ export default function Home() {
     { text: "siktir", sub: "" },
     { text: "siktir", sub: "siktirme" },
     { text: "tamam abi", sub: "anladık" },
-    { text: "aynen", sub: "aynen knk" },
-    { text: "helal", sub: "şaşırtmadı" },
-    { text: "404", sub: "bulunamadı" },
+    { text: "aynen knk", sub: "aynen öyle" },
+    { text: "helal olsun", sub: "şaşırtmadı" },
+    { text: "404 not found", sub: "sayfa bulunamadı" },
   ];
 
   const spineColor =
@@ -158,8 +165,8 @@ export default function Home() {
                       }}
                       className="px-2.5 py-1 rounded bg-surface-card border border-surface-border/80 text-xs font-mono text-text-sec hover:text-white hover:border-blurple/50 transition-colors"
                     >
-                      /{p.text}
-                      {p.sub && <span className="text-text-muted">?{p.sub}</span>}
+                      /{p.text.replace(/\s+/g, "+")}
+                      {p.sub && <span className="text-text-muted">?{p.sub.replace(/\s+/g, "+")}</span>}
                     </button>
                   ))}
                 </div>

@@ -22,9 +22,10 @@
    - Tema renk desteği: Blurple (`#5865F2`), Crimson (`#ED4245`), Emerald (`#57F287`).
 
 2. **Dinamik Rota Sayfası (`src/app/[text]/page.tsx`):**
-   - Kullanıcının istediği özel sade syntax desteği:
+   - Kullanıcının istediği özel sade syntax ve `+` boşluk desteği:
      - `p.ramazanakyol.me/siktir` $\rightarrow$ Başlık: `siktir`
      - `p.ramazanakyol.me/siktir?siktirme` $\rightarrow$ Başlık: `siktir`, Alt başlık: `siktirme`
+     - `p.ramazanakyol.me/tamam+abi?anladık+kral` $\rightarrow$ Başlık: `tamam abi`, Alt başlık: `anladık kral` (`+` işaretleri otomatik boşluk olarak çözümlenir).
    - Discord botu için sunucu taraflı render edilen `<meta property="og:image">`, `<meta property="og:title">` ve `<meta name="twitter:card" content="summary_large_image">` etiketleri.
    - İnsanlar tarayıcıda girdiğinde çalışan şık kart görünümü, doğrudan link kopyalama ve PNG indirme butonları.
 

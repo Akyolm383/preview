@@ -21,8 +21,16 @@ export default function ClientDynamicView({
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  const canonicalUrl = `https://p.ramazanakyol.me/${encodeURIComponent(title)}${
-    subtitle ? `?${encodeURIComponent(subtitle)}` : ""
+  const formatSlug = (str: string) => {
+    return str
+      .trim()
+      .split(/\s+/)
+      .map((part) => encodeURIComponent(part))
+      .join("+");
+  };
+
+  const canonicalUrl = `https://p.ramazanakyol.me/${formatSlug(title)}${
+    subtitle ? `?${formatSlug(subtitle)}` : ""
   }`;
 
   const [fullUrl, setFullUrl] = useState(canonicalUrl);
@@ -30,7 +38,7 @@ export default function ClientDynamicView({
   useEffect(() => {
     setMounted(true);
     if (typeof window !== "undefined") {
-      setFullUrl(window.location.href);
+      setFullUrl(window.location.href.replace(/%20/g, "+"));
     }
   }, []);
 

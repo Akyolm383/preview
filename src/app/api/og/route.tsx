@@ -25,6 +25,10 @@ export async function GET(req: NextRequest) {
       subtitle = subtitle || "Discord Dynamic Preview Generator";
     }
 
+    // Convert '+' signs to spaces for clean URL syntax
+    title = title.replace(/\+/g, " ").trim();
+    subtitle = subtitle.replace(/\+/g, " ").trim();
+
     // Theme color mapping
     let accentColor = "#5865F2"; // Blurple
     let glowColor = "rgba(88, 101, 242, 0.35)";
