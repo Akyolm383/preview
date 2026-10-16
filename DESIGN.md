@@ -1,61 +1,63 @@
-# DESIGN.md — Obsidian Forge Design System
-> **Project:** Discord Dynamic Preview Generator (`p.ramazanakyol.me`)  
+# DESIGN.md — Universal Studio Design System
+> **Project:** Universal Social Open Graph & Dynamic Preview Studio (`p.ramazanakyol.me`)  
 > **Stitch Project ID:** `3212626386198937204`  
-> **Screen ID:** `6dc9f24edb9f416fa26e26ce9732d2a0`  
-> **Theme:** Obsidian Forge (Developer Dark Mode & Discord Simulation)
+> **Screen ID:** `a30c3535656a46a1a24bdad272002f6e`  
+> **Aesthetic Archetype:** Linear / Vercel Ultra-Dark Bento with Cyber-Developer Luxury
 
 ---
 
-## 🎨 1. Color Palette
+## 🎨 1. Color System
 
-### Base Surfaces
-- **Canvas / Background:** `#0B0E14` (Deep obsidian black)
-- **Surface Level 1 (Panels & Sidebar):** `#1E1F22` (Dark charcoal container)
-- **Surface Level 2 (Discord Chat Timeline):** `#313338` (Authentic Discord dark surface)
-- **Surface Level 3 (Embed Card Body & Inputs):** `#2B2D31` (Discord embed container background)
-- **Surface Border:** `#3F4147` (Hairline border, 1px)
-- **Surface Subtle Border:** `rgba(255, 255, 255, 0.06)`
+### Deep Surfaces & Canvases
+- **Root Canvas / Background:** `#0d0e12` (Ultra-dark obsidian)
+- **Surface Elevation 1 (Containers & Panels):** `#121317` (Deep slate surface)
+- **Surface Elevation 2 (Cards & Workbenches):** `#1a1b20` (Subtle dark elevation)
+- **Surface Elevation 3 (Inputs & Active Areas):** `#1e1f24` (Focused interactive element)
+- **Surface High (Elevated Modals & Previews):** `#292a2e`
+- **Surface Hairline Border:** `rgba(255, 255, 255, 0.08)` / `#2d3139`
+- **Specular Border Accent:** `linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16) 50%, transparent)`
 
-### Semantic & Accents
-- **Primary / Blurple:** `#5865F2` (Discord signature blurple)
-- **Neon Emerald:** `#57F287` (Online indicator, verified, 200 OK, copy success)
-- **Cyber Crimson:** `#ED4245` (Warning, error, red accent theme)
-- **Warning Gold:** `#FEE75C` (Payload alerts)
+### Semantic Platform Accents
+- **Discord Blurple:** `#5865F2` (Signature Discord accent & primary glow)
+- **WhatsApp Emerald:** `#25D366` / `#41E575` (WhatsApp verified indicator, online status, 200 OK)
+- **X (Twitter) Monochrome:** `#FFFFFF` (Crisp white border and badge)
+- **Instagram Coral/Magenta:** `#E1306C` / `#DB2B68` (Story & DM social badge)
+- **Telegram Sky Blue:** `#24A1DE` (Fast preview badge)
 
 ### Typography Colors
-- **High Contrast / Primary Text:** `#F2F3F5` (Crisp white/silver)
-- **Secondary Text / Descriptions:** `#DBDEE1` (Soft silver grey)
-- **Muted / Form Labels / Timestamps:** `#949BA4` (Subtle grey)
-- **Gutter / Code Metadata:** `#4E5058` (Dark muted zinc)
+- **High-Contrast Text / Headlines:** `#F8FAFC` / `#E3E2E8` (Crisp white silver)
+- **Secondary Text / Descriptions:** `#94A3B8` / `#C6C5D7` (Neutral slate grey)
+- **Muted / Form Labels:** `#64748B` / `#8F8FA0` (Subtle gutter text)
+- **Code Metadata & Gutter:** `#475569` (Dark monospace text)
 
 ---
 
 ## 🔤 2. Typography
 
-- **Headings & Body UI:** `Geist, Inter, system-ui, sans-serif`
-  - Headlines: 600 - 700 weight, `-0.02em` tracking
-  - Body: 400 - 500 weight, 14px base
-- **Code, Metadata, Links & Slugs:** `JetBrains Mono, Menlo, monospace`
-  - Used for URL slugs (`/siktir`), query strings (`?siktirme`), HTTP headers, and badges.
+- **Headings & Impact Display:** `Plus Jakarta Sans, system-ui, sans-serif`
+  - Hero Headline: 700 - 800 weight, `-0.03em` tracking
+  - Section Headings: 600 weight, `-0.02em` tracking
+- **Body UI & Controls:** `Geist, Inter, system-ui, sans-serif`
+  - Body Text: 400 - 500 weight, 14px / 16px base
+- **Endpoints, Slugs, Code & Badges:** `JetBrains Mono, monospace`
+  - Used for URL paths (`/merhaba`), query strings (`?selam`), HTTP metrics, and status pills.
 
 ---
 
-## 📐 3. Spacing & Corner Radii
+## 📐 3. Geometry, Elevation & Motion
 
-- **Base Spacing:** 4px grid (`space-xs: 4px`, `space-sm: 8px`, `space-md: 16px`, `space-lg: 24px`, `space-xl: 32px`)
 - **Corner Radii:**
-  - Inputs & Code blocks: `4px` (`rounded`)
-  - Discord Embed Card: `4px` (`rounded`) with a `4px solid` left accent spine
+  - Control Inputs & Buttons: `8px` (`rounded-lg`)
+  - Bento Grid Cards: `16px` (`rounded-2xl`)
   - Badges & Status Pills: `9999px` (`rounded-full`)
+- **Elevation & Lighting:**
+  - Ambient top mesh glow: `radial-gradient(circle at 50% 0%, rgba(88, 101, 242, 0.12), transparent 70%)`
+  - Engineering blueprint grid: `radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px) 32px 32px`
+  - Specular top highlight: 1px linear gradient along the top edge of cards.
 
 ---
 
-## 🖼️ 4. Discord Embed Image Specs
-
-- **OG Image Dimensions:** 1200 x 630 px (Discord Large Image Embed standard, 1.91:1 ratio)
-- **Format:** High-definition PNG rendered via Satori & Edge runtime
-- **Default Visual Style:**
-  - Deep dark background (`#1E1F22` / `#0B0E14`) with subtle grid / radial gradient
-  - Massive, centered bold typographic text (dynamic sizing based on string length)
-  - Subtitle below with high legibility (`#949BA4` / `#DBDEE1`)
-  - Minimal watermark / badge: `p.ramazanakyol.me`
+## 🖼️ 4. Asset Guidelines & Content Policy
+- Sitede hiçbir kırık resim, Unsplash linki veya gri kutu bulunmaz.
+- Avatar ve tüm görsel varlıklar yerleşik `public/images/` klasöründe depolanır.
+- **İçerik Temizliği (Safe for Prod):** Tüm varsayılan metinler, ipuçları ve örnekler profesyonel, yaratıcı ve geliştirici dostu ifadelerden (`merhaba`, `tamam abi`, `harika proje`, `selam`) oluşur.

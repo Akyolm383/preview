@@ -67,7 +67,7 @@ export default function ClientDynamicView({
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald animate-pulse" />
           <span className="text-xs font-mono text-emerald uppercase tracking-wider font-semibold">
-            Discord Ready
+            Universal Edge Ready
           </span>
         </div>
       </header>
@@ -77,7 +77,7 @@ export default function ClientDynamicView({
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-1 border border-surface-border text-xs text-text-sec mb-6 font-mono">
           <Sparkles className="w-3.5 h-3.5 text-blurple" />
-          <span>Discord Canlı Önizleme Kartı</span>
+          <span>Sosyal Medya Canlı Önizleme Kartı</span>
         </div>
 
         {/* Discord Chat Simulator Card */}
@@ -135,7 +135,7 @@ export default function ClientDynamicView({
               </div>
 
               <div className="mt-2 flex items-center justify-between text-[11px] text-text-gutter font-mono">
-                <span>Discord Large Image Embed</span>
+                <span>{themeConfig.badgeLabel}</span>
                 <span>1200×630 PNG</span>
               </div>
             </div>

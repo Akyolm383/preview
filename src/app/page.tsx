@@ -12,12 +12,16 @@ import {
   Code2,
   Share2,
   MessageCircle,
+  Layers,
+  Cpu,
+  ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import { formatTurkishText } from "@/lib/turkish";
 import { getThemeConfig } from "@/lib/platform";
 
 export default function Home() {
-  const [slugText, setSlugText] = useState("siktir");
+  const [slugText, setSlugText] = useState("merhaba");
   const [subtitle, setSubtitle] = useState("");
   const [theme, setTheme] = useState<string>("auto");
   const [platform, setPlatform] = useState<"discord" | "whatsapp" | "twitter" | "instagram">("discord");
@@ -38,7 +42,7 @@ export default function Home() {
       .join("+");
   };
 
-  const cleanSlug = toPlusSyntax(slugText) || "siktir";
+  const cleanSlug = toPlusSyntax(slugText) || "merhaba";
   const cleanSubtitle = toPlusSyntax(subtitle);
 
   let shareablePath = `/${cleanSlug}`;
@@ -53,7 +57,7 @@ export default function Home() {
 
   const fullShareUrl = `https://${domain}${shareablePath}`;
 
-  // Image source for real-time preview (pass formatted string so + becomes space in preview)
+  // Image source for real-time preview
   const liveOgImageUrl = `/og.png?title=${cleanSlug}${
     cleanSubtitle ? `&sub=${cleanSubtitle}` : ""
   }&theme=${effectiveTheme}`;
@@ -65,35 +69,43 @@ export default function Home() {
   };
 
   const isTr = slugText.includes("?tr") || subtitle.includes("?tr");
-  const renderedTitle = formatTurkishText(slugText || "siktir", isTr);
+  const renderedTitle = formatTurkishText(slugText || "merhaba", isTr);
   const renderedSubtitle = formatTurkishText(subtitle, isTr);
 
+  // Clean, fun, safe-for-production presets
   const presetList = [
-    { text: "s_eker", sub: "" },
+    { text: "merhaba", sub: "dunya" },
     { text: "c_ok+g_uzel", sub: "harika" },
-    { text: "anlad_ik", sub: "kral" },
-    { text: "bos+yapma", sub: "lutfen?tr" },
-    { text: "siktir", sub: "siktirme" },
+    { text: "anlad_im", sub: "kral" },
+    { text: "gunaydin", sub: "herkese?tr" },
+    { text: "yeni+proje", sub: "v2.0" },
     { text: "tamam abi", sub: "anladık" },
   ];
 
   return (
-    <main className="min-h-screen bg-obsidian text-text-high flex flex-col justify-between selection:bg-blurple selection:text-white">
-      {/* 1. Header */}
-      <header className="border-b border-surface-border/60 bg-surface-1/40 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="font-mono font-bold text-base sm:text-lg text-white tracking-tight">
+    <main className="min-h-screen bg-obsidian text-text-high flex flex-col justify-between selection:bg-blurple selection:text-white relative overflow-hidden">
+      {/* Background radial ambient glow & blueprint grid */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-b from-blurple/12 via-emerald/5 to-transparent blur-3xl pointer-events-none -z-10" />
+      <div className="absolute inset-0 blueprint-grid pointer-events-none -z-10 opacity-60" />
+
+      {/* 1. Floating Pill Navigation */}
+      <header className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 pt-2">
+        <nav className="max-w-6xl mx-auto rounded-full px-5 sm:px-6 py-3 bg-[#0F1117]/85 backdrop-blur-xl border border-white/10 shadow-2xl flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blurple to-emerald/80 flex items-center justify-center text-white font-bold text-sm shadow-glow">
+              P
+            </div>
+            <span className="font-headline font-bold text-base sm:text-lg text-white tracking-tight">
               p.ramazanakyol.me
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono bg-blurple/15 text-blurple border border-blurple/30 font-medium">
-              <Sparkles className="w-3 h-3" />
-              Universal Social OG Generator
+            <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-mono bg-white/5 text-text-sec border border-white/10 font-medium">
+              <Sparkles className="w-3 h-3 text-blurple" />
+              Dynamic Social OG Engine
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-text-muted">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-text-muted">
               <span>Discord</span>
               <span>•</span>
               <span>WhatsApp</span>
@@ -102,64 +114,98 @@ export default function Home() {
               <span>•</span>
               <span>Instagram</span>
             </div>
-            <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded bg-surface-card border border-surface-border text-xs font-mono text-emerald">
+
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald/10 border border-emerald/30 text-xs font-mono text-emerald">
               <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
-              <span className="hidden sm:inline">Vercel Edge Ready</span>
-              <span className="sm:hidden">Edge Ready</span>
+              <span className="font-semibold">Edge Global Ready</span>
             </div>
           </div>
-        </div>
+        </nav>
       </header>
 
-      {/* 2. Hero & Interactive Workbench */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+      {/* 2. Hero & Interactive Workbench (Asymmetric Bento Grid) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 w-full">
+        {/* Hero Tagline */}
+        <div className="text-center max-w-3xl mx-auto mb-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-panel border border-white/10 text-xs text-text-sec mb-3 shadow-sm">
+            <Zap className="w-3.5 h-3.5 text-emerald" />
+            <span className="font-mono text-[11px]">Sıfır Yapılandırma • Anında Önizleme Linki</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline font-extrabold text-white tracking-tight leading-tight">
+            Evrensel Sosyal Medya <br className="hidden sm:inline" />
+            <span className="bg-gradient-to-r from-blurple via-emerald to-white bg-clip-text text-transparent">
+              Dinamik Önizleme Stüdyosu
+            </span>
+          </h1>
+          <p className="text-sm sm:text-base text-text-sec mt-3 leading-relaxed">
+            Tek bir URL ile Discord, WhatsApp, X ve Instagram için platformun kendi tasarım diliyle optimize edilmiş Open Graph kartları üretin.
+          </p>
+        </div>
+
+        {/* Workbench Layout (5 cols left, 7 cols right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Embed Configuration (5 cols) */}
-          <div className="lg:col-span-5 bg-surface-1 rounded-lg border border-surface-border p-6 shadow-xl">
-            <div className="mb-6">
-              <h2 className="text-xl font-bold text-white tracking-tight">
-                Önizleme Yapılandırması
-              </h2>
-              <p className="text-xs text-text-muted mt-1">
-                İstediğin metni ve alt başlığı yaz; Discord, WhatsApp, X ve Instagram kartı anında üretilsin.
-              </p>
+          <div className="lg:col-span-5 bg-surface-panel rounded-2xl border border-surface-border p-6 shadow-2xl specular-border relative">
+            <div className="mb-5 pb-4 border-b border-white/5 flex items-center justify-between">
+              <div>
+                <h2 className="text-base font-headline font-bold text-white tracking-tight">
+                  Önizleme Yapılandırması
+                </h2>
+                <p className="text-xs text-text-muted mt-0.5">
+                  Metni yazın, linkiniz ve tüm platform önizlemeleriniz anında üretilsin.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono uppercase tracking-wider bg-surface-1 px-2.5 py-1 rounded text-emerald border border-emerald/20 font-semibold">
+                Live Studio
+              </span>
             </div>
 
-            {/* Main Text Input */}
+            {/* Inputs Container */}
             <div className="space-y-4">
+              {/* Main Slug Input */}
               <div>
-                <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted mb-2">
-                  Ana Metin (URL Slug • Boşluklar için <span className="text-white">+</span> destekli)
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted">
+                    Ana Metin (URL Slug)
+                  </label>
+                  <span className="text-[10px] font-mono text-text-muted">
+                    Boşluklar için <code className="text-white bg-white/10 px-1 py-0.5 rounded">+</code> destekli
+                  </span>
+                </div>
                 <div className="relative flex items-center">
-                  <span className="absolute left-3 font-mono text-xs text-text-gutter select-none">
+                  <span className="absolute left-3.5 font-mono text-sm text-text-muted select-none">
                     /
                   </span>
                   <input
                     type="text"
                     value={slugText}
                     onChange={(e) => setSlugText(e.target.value)}
-                    placeholder="siktir veya tamam abi"
-                    className="w-full bg-surface-card border border-surface-border rounded pl-7 pr-3 py-2.5 text-sm font-mono text-white placeholder-text-gutter focus:outline-none focus:border-blurple focus:ring-1 focus:ring-blurple transition-all"
+                    placeholder="merhaba veya harika proje"
+                    className="w-full bg-surface-card border border-surface-border rounded-lg pl-8 pr-3.5 py-2.5 text-sm font-mono text-white placeholder-text-gutter focus:outline-none focus:border-blurple focus:ring-1 focus:ring-blurple transition-all"
                   />
                 </div>
               </div>
 
               {/* Subtitle Input */}
               <div>
-                <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted mb-2">
-                  Alt Başlık (Opsiyonel • <span className="text-text-sec">?anladık+kral</span>)
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted">
+                    Alt Başlık (Opsiyonel)
+                  </label>
+                  <span className="text-[10px] font-mono text-text-muted">
+                    Syntax: <code className="text-emerald bg-white/10 px-1 py-0.5 rounded">?alt+yazı</code>
+                  </span>
+                </div>
                 <div className="relative flex items-center">
-                  <span className="absolute left-3 font-mono text-xs text-text-gutter select-none">
+                  <span className="absolute left-3.5 font-mono text-sm text-text-muted select-none">
                     ?
                   </span>
                   <input
                     type="text"
                     value={subtitle}
                     onChange={(e) => setSubtitle(e.target.value)}
-                    placeholder="siktirme veya anladık"
-                    className="w-full bg-surface-card border border-surface-border rounded pl-7 pr-3 py-2.5 text-sm font-mono text-white placeholder-text-gutter focus:outline-none focus:border-blurple focus:ring-1 focus:ring-blurple transition-all"
+                    placeholder="dunya veya canlı yayında"
+                    className="w-full bg-surface-card border border-surface-border rounded-lg pl-8 pr-3.5 py-2.5 text-sm font-mono text-white placeholder-text-gutter focus:outline-none focus:border-blurple focus:ring-1 focus:ring-blurple transition-all"
                   />
                 </div>
               </div>
@@ -169,7 +215,7 @@ export default function Home() {
                 <label className="block text-[11px] font-mono uppercase tracking-wider text-text-gutter mb-2">
                   Hızlı Örnekler
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {presetList.map((p, idx) => (
                     <button
                       key={idx}
@@ -178,7 +224,7 @@ export default function Home() {
                         setSlugText(p.text);
                         setSubtitle(p.sub);
                       }}
-                      className="px-2.5 py-1 rounded bg-surface-card border border-surface-border/80 text-xs font-mono text-text-sec hover:text-white hover:border-blurple/50 transition-colors"
+                      className="px-2.5 py-1 rounded bg-surface-card border border-surface-border text-xs font-mono text-text-sec hover:text-white hover:border-blurple/50 transition-colors"
                     >
                       /{p.text.replace(/\s+/g, "+")}
                       {p.sub && <span className="text-text-muted">?{p.sub.replace(/\s+/g, "+")}</span>}
@@ -193,7 +239,7 @@ export default function Home() {
                   <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-text-muted">
                     Tema Modu
                   </label>
-                  <span className="text-[10px] font-mono text-emerald flex items-center gap-1">
+                  <span className="text-[10px] font-mono text-emerald flex items-center gap-1 font-semibold">
                     <Sparkles className="w-3 h-3" />
                     {theme === "auto" ? "Otomatik Algılama Açık" : "Özel Tema Sabit"}
                   </span>
@@ -202,7 +248,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setTheme("auto")}
-                    className={`col-span-2 sm:col-span-4 flex items-center justify-center gap-2 py-2 px-3 rounded text-xs font-medium border transition-all ${
+                    className={`col-span-2 sm:col-span-4 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium border transition-all ${
                       theme === "auto"
                         ? "bg-emerald/15 border-emerald text-emerald font-semibold shadow-glow-emerald"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
@@ -215,7 +261,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setTheme("blurple")}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
                       theme === "blurple"
                         ? "bg-blurple/20 border-blurple text-white shadow-glow"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
@@ -228,7 +274,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setTheme("whatsapp")}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
                       theme === "whatsapp"
                         ? "bg-[#25D366]/20 border-[#25D366] text-[#25D366] shadow-glow-emerald"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
@@ -241,9 +287,9 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setTheme("twitter")}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
                       theme === "twitter"
-                        ? "bg-white/20 border-white text-white shadow-glow"
+                        ? "bg-white/20 border-white text-white"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
                     }`}
                   >
@@ -254,9 +300,9 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setTheme("instagram")}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-xs font-medium border transition-all ${
+                    className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
                       theme === "instagram"
-                        ? "bg-[#E1306C]/20 border-[#E1306C] text-[#E1306C]"
+                        ? "bg-[#E1306C]/20 border-[#E1306C] text-[#E1306C] shadow-glow-instagram"
                         : "bg-surface-card border-surface-border text-text-sec hover:text-white"
                     }`}
                   >
@@ -276,20 +322,20 @@ export default function Home() {
                     type="text"
                     readOnly
                     value={fullShareUrl}
-                    className="flex-1 bg-surface-card border border-surface-border rounded px-3 py-2 text-xs font-mono text-emerald select-all focus:outline-none"
+                    className="flex-1 bg-surface-card border border-surface-border rounded-lg px-3 py-2.5 text-xs font-mono text-emerald select-all focus:outline-none"
                   />
                   <button
                     onClick={copyToClipboard}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded text-xs font-medium transition-all ${
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all ${
                       copied
-                        ? "bg-emerald text-black"
+                        ? "bg-emerald text-black font-semibold shadow-glow-emerald"
                         : "bg-blurple hover:bg-blurple/90 text-white shadow-glow"
                     }`}
                   >
                     {copied ? (
                       <>
                         <Check className="w-3.5 h-3.5" />
-                        <span>Kopyalandı</span>
+                        <span>Kopyalandı!</span>
                       </>
                     ) : (
                       <>
@@ -302,12 +348,12 @@ export default function Home() {
               </div>
 
               {/* Instagram & Turkish Characters Guide Tip */}
-              <div className="p-3 rounded bg-surface-card/60 border border-surface-border/60 text-[11px] text-text-sec flex items-start gap-2.5">
+              <div className="p-3.5 rounded-xl bg-surface-card/60 border border-surface-border/60 text-[11px] text-text-sec flex items-start gap-2.5">
                 <span className="text-blurple font-bold text-sm leading-none">💡</span>
                 <div className="leading-relaxed">
-                  <span className="font-semibold text-white">Instagram & Mobil Klavye İpucu:</span>
+                  <span className="font-semibold text-white">Instagram &amp; Mobil Sohbet İpucu:</span>
                   <p className="mt-0.5 text-text-muted">
-                    Instagram uygulamasında elle yazarken Türkçe harfler (<code>ş, ç, ğ, ı, ö, ü</code>) linki böler. Bunun yerine şu pratik ASCII kısayollarını kullanabilirsiniz:
+                    Mobil sohbetlerde elle yazarken linkin bölünmemesi için şu pratik ASCII kısayollarını kullanabilirsiniz:
                   </p>
                   <div className="flex flex-wrap gap-1.5 mt-1.5 font-mono text-[10px] text-emerald">
                     <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">s_ &rarr; ş</span>
@@ -325,24 +371,24 @@ export default function Home() {
             </div>
 
             {/* Performance status */}
-            <div className="mt-6 pt-4 border-t border-surface-border/60 flex items-center justify-between text-xs font-mono text-text-gutter">
-              <span className="flex items-center gap-1.5 text-emerald">
+            <div className="mt-5 pt-4 border-t border-surface-border/60 flex items-center justify-between text-xs font-mono text-text-gutter">
+              <span className="flex items-center gap-1.5 text-emerald font-semibold">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
                 Edge Global Cache Enabled
               </span>
-              <span>v2.5.0-universal</span>
+              <span>v3.0.0-bento</span>
             </div>
           </div>
 
           {/* Right Column: Multi-Platform Chat Simulator (7 cols) */}
-          <div className="lg:col-span-7 bg-surface-chat rounded-lg border border-surface-border/60 p-6 shadow-2xl">
+          <div className="lg:col-span-7 bg-surface-panel rounded-2xl border border-surface-border p-6 shadow-2xl specular-border relative">
             {/* Platform Selector Tabs */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-surface-border/40">
-              <div className="flex flex-wrap items-center gap-1.5 bg-surface-1 p-1 rounded-md border border-surface-border">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-white/5">
+              <div className="flex flex-wrap items-center gap-1.5 bg-surface-1 p-1 rounded-xl border border-surface-border">
                 <button
                   type="button"
                   onClick={() => setPlatform("discord")}
-                  className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
                     platform === "discord"
                       ? "bg-blurple text-white shadow-glow"
                       : "text-text-muted hover:text-white"
@@ -353,7 +399,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setPlatform("whatsapp")}
-                  className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
                     platform === "whatsapp"
                       ? "bg-[#25D366] text-black font-semibold shadow-glow-emerald"
                       : "text-text-muted hover:text-white"
@@ -364,7 +410,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setPlatform("twitter")}
-                  className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
                     platform === "twitter"
                       ? "bg-white text-black font-semibold"
                       : "text-text-muted hover:text-white"
@@ -375,9 +421,9 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setPlatform("instagram")}
-                  className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
                     platform === "instagram"
-                      ? "bg-[#E1306C] text-white font-semibold"
+                      ? "bg-[#E1306C] text-white font-semibold shadow-glow-instagram"
                       : "text-text-muted hover:text-white"
                   }`}
                 >
@@ -385,7 +431,7 @@ export default function Home() {
                 </button>
               </div>
 
-              <span className="text-[10px] font-mono uppercase tracking-wider bg-surface-1 px-2.5 py-1 rounded text-text-gutter border border-surface-border/60">
+              <span className="text-[10px] font-mono uppercase tracking-wider bg-surface-1 px-3 py-1.5 rounded-full text-text-sec border border-surface-border font-semibold">
                 {platform === "discord"
                   ? "Discord Rich Embed"
                   : platform === "whatsapp"
@@ -398,13 +444,13 @@ export default function Home() {
 
             {/* --- 1. DISCORD SIMULATOR VIEW --- */}
             {platform === "discord" && (
-              <div className="flex items-start gap-4">
-                <div className="relative w-11 h-11 rounded-full overflow-hidden border border-white/10 shrink-0">
+              <div className="flex items-start gap-3.5 bg-[#313338] p-4 rounded-xl border border-white/5">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/10 shrink-0">
                   <Image
                     src="/images/avatar.png"
                     alt="p.ramazanakyol"
-                    width={44}
-                    height={44}
+                    width={40}
+                    height={40}
                     className="object-cover"
                     unoptimized
                   />
@@ -428,7 +474,7 @@ export default function Home() {
                   </p>
 
                   {/* Discord Embed Card */}
-                  <div className="mt-3 relative flex rounded bg-surface-card border border-white/5 overflow-hidden pl-3 py-3 pr-4 shadow-lg">
+                  <div className="mt-3 relative flex rounded bg-[#2B2D31] border border-white/5 overflow-hidden pl-3 py-3 pr-4 shadow-lg">
                     <div className={`absolute left-0 top-0 bottom-0 w-1 ${spineColor}`} />
 
                     <div className="w-full">
@@ -437,7 +483,7 @@ export default function Home() {
                       </p>
 
                       <h3 className="text-base font-bold text-white mb-0.5">
-                        {renderedTitle || "siktir"}
+                        {renderedTitle || "merhaba"}
                       </h3>
 
                       {renderedSubtitle && (
@@ -453,13 +499,13 @@ export default function Home() {
                         />
                       </div>
 
-                      <div className="mt-2 flex items-center justify-between text-[11px] text-text-gutter font-mono">
+                      <div className="mt-2.5 flex items-center justify-between text-[11px] text-text-gutter font-mono">
                         <span>p.ramazanakyol.me — Edge Rendered</span>
                         <a
                           href={shareablePath}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-blurple hover:underline flex items-center gap-1"
+                          className="text-blurple hover:underline flex items-center gap-1 font-semibold"
                         >
                           <span>Sayfayı Aç</span>
                           <ExternalLink className="w-3 h-3" />
@@ -473,10 +519,10 @@ export default function Home() {
 
             {/* --- 2. WHATSAPP SIMULATOR VIEW --- */}
             {platform === "whatsapp" && (
-              <div className="p-4 rounded-lg bg-[#0b141a] border border-[#202c33]">
-                <div className="max-w-md ml-auto bg-[#005c4b] text-white rounded-lg rounded-tr-none p-2 shadow-md relative">
+              <div className="p-4 rounded-xl bg-[#0b141a] border border-[#202c33]">
+                <div className="max-w-md ml-auto bg-[#005c4b] text-white rounded-2xl rounded-tr-none p-2.5 shadow-md relative">
                   {/* WhatsApp Link Card Preview */}
-                  <div className="rounded bg-[#025141] overflow-hidden border border-[#0b141a]/40 mb-1.5">
+                  <div className="rounded-xl bg-[#025141] overflow-hidden border border-[#0b141a]/40 mb-1.5">
                     <div className="aspect-[1200/630] w-full bg-black relative">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -485,16 +531,16 @@ export default function Home() {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="p-2.5">
+                    <div className="p-3">
                       <h4 className="text-sm font-bold text-white leading-tight">
-                        {renderedTitle || "siktir"}
+                        {renderedTitle || "merhaba"}
                       </h4>
                       {renderedSubtitle && (
                         <p className="text-xs text-white/80 line-clamp-1 mt-0.5">
                           {renderedSubtitle}
                         </p>
                       )}
-                      <p className="text-[11px] text-[#25D366] font-mono mt-1">
+                      <p className="text-[11px] text-[#25D366] font-mono mt-1 font-semibold">
                         p.ramazanakyol.me
                       </p>
                     </div>
@@ -504,7 +550,7 @@ export default function Home() {
                     {fullShareUrl}
                   </p>
 
-                  <div className="flex items-center justify-end gap-1 text-[10px] text-white/60 mt-1">
+                  <div className="flex items-center justify-end gap-1 text-[10px] text-white/60 mt-1 px-1">
                     <span>17:01</span>
                     <span className="text-[#53bdeb] font-bold">✓✓</span>
                   </div>
@@ -514,7 +560,7 @@ export default function Home() {
 
             {/* --- 3. X / TWITTER SIMULATOR VIEW --- */}
             {platform === "twitter" && (
-              <div className="p-4 rounded-lg bg-black border border-[#2f3336]">
+              <div className="p-4 rounded-xl bg-black border border-[#2f3336]">
                 <div className="flex items-start gap-3 mb-2">
                   <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 shrink-0">
                     <Image
@@ -552,7 +598,7 @@ export default function Home() {
                       p.ramazanakyol.me
                     </p>
                     <h4 className="text-sm font-semibold text-white mt-0.5 line-clamp-1">
-                      {renderedTitle || "siktir"}
+                      {renderedTitle || "merhaba"}
                     </h4>
                     {renderedSubtitle && (
                       <p className="text-xs text-[#71767b] line-clamp-1 mt-0.5">
@@ -566,7 +612,7 @@ export default function Home() {
 
             {/* --- 4. INSTAGRAM SIMULATOR VIEW --- */}
             {platform === "instagram" && (
-              <div className="p-4 rounded-lg bg-black border border-[#262626]">
+              <div className="p-4 rounded-xl bg-black border border-[#262626]">
                 <div className="max-w-md ml-auto bg-[#262626] text-white rounded-2xl p-2.5 shadow-md relative">
                   {/* Instagram DM Link Card */}
                   <div className="rounded-xl overflow-hidden border border-white/10 mb-1.5 bg-[#121212]">
@@ -586,14 +632,14 @@ export default function Home() {
                         </span>
                       </div>
                       <h4 className="text-sm font-bold text-white leading-tight">
-                        {renderedTitle || "siktir"}
+                        {renderedTitle || "merhaba"}
                       </h4>
                       {renderedSubtitle && (
                         <p className="text-xs text-[#a8a8a8] line-clamp-1 mt-0.5">
                           {renderedSubtitle}
                         </p>
                       )}
-                      <p className="text-[11px] text-[#737373] font-mono mt-1">
+                      <p className="text-[11px] text-[#737373] font-mono mt-1 font-semibold">
                         p.ramazanakyol.me
                       </p>
                     </div>
@@ -613,65 +659,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Architectural Advantages Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+      {/* 3. Lower Bento Feature Cards Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-white tracking-tight">
-            Evrensel Sosyal Medya Uyumluluğu
+          <h2 className="text-xl font-headline font-bold text-white tracking-tight">
+            Geliştirici Altyapısı &amp; Mimari Standartlar
           </h2>
           <p className="text-xs text-text-muted mt-0.5">
-            Tüm botlar ve platformlar için özel optimize edilmiş standart Open Graph &amp; Twitter Card altyapısı.
+            Tüm sosyal medya botları, arama motorları ve mobil sohbetler için optimize edilmiş tam uyumlu altyapı.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="bg-surface-1 rounded-lg border border-surface-border p-5 hover:border-surface-border/90 transition-colors">
-            <div className="w-9 h-9 rounded bg-[#25D366]/15 border border-[#25D366]/30 flex items-center justify-center text-[#25D366] mb-3">
-              <MessageCircle className="w-4 h-4" />
+          <div className="bg-surface-panel rounded-2xl border border-surface-border p-5 hover:border-white/20 transition-all specular-border">
+            <div className="w-10 h-10 rounded-xl bg-emerald/15 border border-emerald/30 flex items-center justify-center text-emerald mb-3.5 shadow-glow-emerald">
+              <Zap className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-white mb-1">WhatsApp &amp; Meta Scraper</h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              WhatsApp botlarının gerektirdiği mutlak HTTPS adresleri ve 300KB altı yüksek çözünürlüklü önbellekleme desteği.
+            <h3 className="text-base font-headline font-bold text-white mb-1.5">
+              &lt;15ms Edge Cache Latency
+            </h3>
+            <p className="text-xs text-text-sec leading-relaxed">
+              Vercel Edge Network ve Cloudflare CDN üzerinde <code>Cache-Control: public, max-age=31536000, immutable</code> başlıklarıyla küresel mikrosaniyelik TTFB hızı.
             </p>
           </div>
 
           {/* Card 2 */}
-          <div className="bg-surface-1 rounded-lg border border-surface-border p-5 hover:border-surface-border/90 transition-colors">
-            <div className="w-9 h-9 rounded bg-white/10 border border-white/20 flex items-center justify-center text-white mb-3">
-              <Share2 className="w-4 h-4" />
+          <div className="bg-surface-panel rounded-2xl border border-surface-border p-5 hover:border-white/20 transition-all specular-border">
+            <div className="w-10 h-10 rounded-xl bg-blurple/15 border border-blurple/30 flex items-center justify-center text-blurple mb-3.5 shadow-glow">
+              <Cpu className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-white mb-1">
-              X (Twitter) &amp; Telegram
+            <h3 className="text-base font-headline font-bold text-white mb-1.5">
+              Akıllı Crawler Algılama Motoru
             </h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              <code>summary_large_image</code> standartlarında 1.91:1 oranlı tam ekran kart önizlemesi.
+            <p className="text-xs text-text-sec leading-relaxed">
+              Gelen botun User-Agent kimliğini anında tanır. Discordbot&apos;a mor, WhatsApp&apos;a yeşil, X&apos;e siyah-beyaz, Instagram&apos;a pembe temayı sıfır parametreyle uygular.
             </p>
           </div>
 
           {/* Card 3 */}
-          <div className="bg-surface-1 rounded-lg border border-surface-border p-5 hover:border-surface-border/90 transition-colors">
-            <div className="w-9 h-9 rounded bg-blurple/15 border border-blurple/30 flex items-center justify-center text-blurple mb-3">
-              <Zap className="w-4 h-4" />
+          <div className="bg-surface-panel rounded-2xl border border-surface-border p-5 hover:border-white/20 transition-all specular-border">
+            <div className="w-10 h-10 rounded-xl bg-instagram/15 border border-instagram/30 flex items-center justify-center text-instagram mb-3.5 shadow-glow-instagram">
+              <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-white mb-1">Instagram DMs &amp; Stories</h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              Instagram DM link kartları ve Hikaye link çıkartmaları için tam uyumlu Open Graph protokolü.
+            <h3 className="text-base font-headline font-bold text-white mb-1.5">
+              ASCII-Safe Türkçe Karakter Motoru
+            </h3>
+            <p className="text-xs text-text-sec leading-relaxed">
+              Instagram DM ve mobil mesajlaşma uygulamalarındaki link bölünmelerini engelleyen <code>s_</code>, <code>c_</code>, <code>g_</code> ASCII kısayolları ve güvenli URI çözümleyicisi.
             </p>
           </div>
         </div>
       </section>
 
       {/* 4. Footer */}
-      <footer className="border-t border-surface-border/50 py-6 bg-surface-1/20">
+      <footer className="border-t border-surface-border py-6 bg-surface-panel/40 backdrop-blur-md mt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-gutter">
-          <p>© 2026 p.ramazanakyol.me. Universal Social Preview Engine.</p>
-          <div className="flex items-center gap-6">
-            <span className="text-text-muted">Discord</span>
-            <span className="text-text-muted">WhatsApp</span>
-            <span className="text-text-muted">X</span>
-            <span className="text-text-muted">Telegram</span>
-            <span className="text-text-muted">Instagram</span>
+          <p className="font-mono">
+            © 2026 p.ramazanakyol.me • Universal Social Preview Engine • Safe for Production.
+          </p>
+          <div className="flex items-center gap-5 font-mono text-[11px]">
+            <span className="text-text-muted hover:text-white transition-colors">Discord</span>
+            <span className="text-text-muted hover:text-white transition-colors">WhatsApp</span>
+            <span className="text-text-muted hover:text-white transition-colors">X (Twitter)</span>
+            <span className="text-text-muted hover:text-white transition-colors">Instagram</span>
+            <span className="text-text-muted hover:text-white transition-colors">Telegram</span>
           </div>
         </div>
       </footer>

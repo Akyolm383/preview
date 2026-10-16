@@ -1,76 +1,48 @@
-# PROGRESS.md — Universal Social Preview Generator (`p.ramazanakyol.me`)
+# PROGRESS.md — Universal Social Preview Studio (`p.ramazanakyol.me`)
 
 > **Son Güncelleme:** 16 Ekim 2026  
-> **Durum:** Tamamlandı • Evrensel Sosyal Medya Uyumluluğu Eklendi (Discord, WhatsApp, X, Telegram, Instagram)
+> **Durum:** Tamamlandı • Stitch Redesign Yayında & Prod Temizliği Yapıldı  
+> **Stitch Proje ID:** `3212626386198937204`  
+> **Onaylanan Yeni Ekran ID:** `a30c3535656a46a1a24bdad272002f6e`  
+> **Tasarım Sistemi:** Linear / Vercel Ultra-Dark Bento (`DESIGN.md`)
 
 ---
 
-## 📌 1. Proje & Stitch Kimlikleri
-- **Stitch Proje Adı:** `Discord Dynamic Preview Generator`
-- **Stitch Project ID:** `3212626386198937204`
-- **Stitch Screen ID:** `6dc9f24edb9f416fa26e26ce9732d2a0`
-- **Tasarım Sistemi:** Obsidian Forge (`DESIGN.md`)
+## 📌 1. Proje & Tasarım Özeti
+- **Aesthetic Archetype:** Linear / Vercel Ultra-Dark Bento with Cyber-Developer Luxury accents.
+- **Canlı Önizleme Adresi:** `https://p.ramazanakyol.me`
+- **GitHub Reposu:** `https://github.com/Akyolm383/preview` (Branch: `master`)
 
 ---
 
-## 🚀 2. Tamamlanan Sayfalar ve Bileşenler
-1. **Evrensel Open Graph & Twitter Motoru (`src/app/api/og/route.tsx`):**
-   - 1200×630 px (1.91:1 standardı) dinamik PNG üretimi.
-   - WhatsApp, X, Instagram, Facebook ve Telegram için `Cache-Control: public, max-age=31536000, immutable` önbellekleme başlığı eklendi.
-   - Alt rozetler evrensel sosyal medya formatına uyarlandı (`Social Link Preview` & `p.ramazanakyol.me`).
-   - Tam UTF-8 Türkçe karakter ve `+` boşluk syntax desteği.
+## 🚀 2. Tamamlanan Sayfalar, Bileşenler ve Redesign İyileştirmeleri
+1. **Bento Grid Yeniden Tasarımı (`src/app/page.tsx`):**
+   - **Floating Pill Navigation:** Cam efektli (`backdrop-blur-xl bg-[#0F1117]/85 border border-white/10`) yüzen üst çubuk, dinamik beacon etiketi ("Edge Global Ready") ve platform navigasyon rozetleri.
+   - **Hero & Bento Grid Düzeni:**
+     - Sol Sütun (5 col): URL Slug & Subtitle yapılandırma girişleri, hızlı örnek etiketleri (`/merhaba?dunya`, `/c_ok+g_uzel?harika`), akıllı tema seçici ("✨ Otomatik Platform Teması") ve tek tıkla kopyalama paneli.
+     - Sağ Sütun (7 col): Çoklu platform sohbet simülatörü (Discord, WhatsApp, X/Twitter, Instagram sekmeleri) ve platforma özel 1200×630 dinamik Open Graph kartı.
+   - **Alt Bento Bilgi Kartları:**
+     - `<15ms Edge Cache Latency` (Vercel Global Edge immutable caching).
+     - `Akıllı Crawler Algılama Motoru` (Discord, WhatsApp, X, Instagram, Telegram bot tespiti).
+     - `ASCII-Safe Türkçe Karakter Motoru` (Instagram'da link bölünmelerini engelleyen sistem).
 
-2. **Türkçe Karakter & Instagram / Mobil Çözüm Kütüphanesi (`src/lib/turkish.ts`):**
-   - Mobil sohbet uygulamaları (Instagram DM vb.) link ayrıştırıcı regex'leri nedeniyle Türkçe harflerde (`ş, ç, ğ, ı, ö, ü`) URL'yi böler.
-   - Çözüm olarak ASCII dostu kısayol desteği eklendi:
-     - `s_` / `_s` &rarr; `ş`, `S_` / `_S` &rarr; `Ş`
-     - `c_` / `_c` &rarr; `ç`, `C_` / `_C` &rarr; `Ç`
-     - `g_` / `_g` &rarr; `ğ`, `G_` / `_G` &rarr; `Ğ`
-     - `i_` / `_i` &rarr; `ı`, `I_` / `_I` &rarr; `İ`
-     - `o_` / `_o` &rarr; `ö`, `O_` / `_O` &rarr; `Ö`
-     - `u_` / `_u` &rarr; `ü`, `U_` / `_U` &rarr; `Ü`
-   - Sözlük tabanlı `?tr` parametresi (örn: `p.ramazanakyol.me/seker?tr` &rarr; `şeker`).
-   - Sitedeki "Kopyala" butonu linki doğrudan URL-encoded (ASCII güvenli) kopyalar (`/%C5%9Feker`).
+2. **İçerik Temizliği (Production-Ready Safe Content):**
+   - Sitedeki tüm küfürlü ifadeler ("siktir", "siktirme" vb.) tamamen kaldırıldı.
+   - Varsayılan metinler ve örnekler temiz, eğlenceli ve profesyonel ifadelere dönüştürüldü (`merhaba`, `tamam abi`, `harika proje`, `gunaydin`, `anladim kral`).
+   - `src/lib/turkish.ts` içerisindeki sözlük temizlenerek günlük Türkçe kelimelerle zenginleştirildi.
 
-3. **Dinamik Rota Sayfası (`src/app/[text]/page.tsx`):**
-   - `safeDecode` mekanizması ile geçersiz URI formatlarında 500 hatası önlendi.
-   - Tüm platformların botları için mutlak HTTPS adresleri ile:
-     - `og:image`, `og:image:secure_url`, `og:image:type="image/png"`
-     - `og:url`, `og:site_name`, `og:type="website"`
-     - `twitter:card="summary_large_image"`, `twitter:title`, `twitter:description`, `twitter:image`
-   - Temiz syntax:
-     - `p.ramazanakyol.me/siktir`
-     - `p.ramazanakyol.me/s_eker` (Instagram'da bölünmeyen ASCII syntax)
-     - `p.ramazanakyol.me/siktir?siktirme`
-     - `p.ramazanakyol.me/tamam+abi?anladık+kral`
+3. **Otomatik Tarayıcı Testleri (Chrome Headless Test Suite):**
+   - **1440px Masaüstü Görünümü:** `Overflow: false`, `Console Errors: 0`.
+   - **375px Mobil Görünümü:** `Overflow: false`, `Console Errors: 0`.
+   - Taşan metin, yatay kaydırma veya CSS hiza kayması olmadığı doğrulandı.
 
-4. **İnteraktif Çoklu Platform Simülatörü (`src/app/page.tsx`):**
-   - **Discord:** Orijinal karanlık tema, avatar, bot etiketi, renkli sol şeritli kart.
-   - **WhatsApp:** Orijinal koyu tema konuşma balonu, bağlantı kartı, alan adı etiketi ve çift mavi tik.
-   - **X (Twitter):** 16px radius'lu büyük önizleme kartı ve gönderi simülasyonu.
-   - **Instagram:** Instagram Story & DM önizleme kartı ve pembe/magenta rozet desteği.
-   - Otomatik tema modu ("✨ Otomatik Platform Teması") ile varsayılan olarak linklerde ek tema parametresi olmadan her platforma kendi rengi atanır.
-
-5. **Akıllı Platform & Crawler Algılama Motoru (`src/lib/platform.ts`):**
-   - Sunucu tarafında `next/headers` üzerinden `user-agent` header'ı taranarak gelen bot tespit edilir:
-     - `Discordbot` &rarr; Discord Blurple (#5865F2)
-     - `WhatsApp` &rarr; WhatsApp Emerald Green (#25D366)
-     - `Twitterbot` &rarr; X Crisp White/Monochrome (#FFFFFF / #000000)
-     - `facebookexternalhit / Instagram` &rarr; Instagram Magenta/Coral (#E1306C)
-     - `TelegramBot` &rarr; Telegram Sky Blue (#24A1DE)
-   - Kullanıcı dilerse `?theme=crimson` veya `?theme=emerald` ile özel rengini sabitleyebilir; aksi takdirde tamamen otomatik çalışır.
+4. **Evrensel Open Graph API & Dinamik Görünüm:**
+   - `src/app/api/og/route.tsx`: Gelen platform botuna göre dinamik rozet ve renk üretimi.
+   - `src/app/[text]/page.tsx`: Güvenli URL çözümleme (`safeDecode`) ve arama motoru meta etiketleri.
+   - `src/app/[text]/ClientDynamicView.tsx`: Evrensel paylaşım arayüzü ve görsel indirme seçeneği.
 
 ---
 
-## 🛠️ 3. Platform Uyumluluk Detayları
-- **WhatsApp:** Meta Graph Scraper'ın beklediği `<300KB` boyut ve mutlak URL kuralı sağlandı. Otomatik yeşil tema.
-- **X (Twitter):** `summary_large_image` kart tipiyle tam genişlikli görsel standardı sağlandı. Otomatik siyah-beyaz minimalist tema.
-- **Instagram (DM / Hikaye Çıkartması):** 
-  - Elle yazımda ASCII kısayolları (`s_eker`) veya web sitesinden tek tıkla kopyalama (`/%C5%9Feker`) ile link kırılma sorunu tamamen giderildi. Otomatik Instagram magenta teması.
-- **Discord:** Orijinal Blurple teması ve mor sol şerit.
-- **Telegram & LinkedIn:** Standart Open Graph etiketleriyle doğrudan uyumlu.
-
----
-
-## 📋 4. Sıradaki Adım
-- Değişiklikler GitHub reposuna gönderildi. Vercel otomatik olarak canlıya alacaktır.
+## 📋 3. Sıradaki Adım
+- Tüm kodlar `master` dalına pushlandı ve Vercel otomatik olarak yayına aldı.
+- Sıradaki aşamada temiz bir sohbet açıp `@DESIGN.md @PROGRESS.md` dosyalarını etiketleyebilirsiniz.
