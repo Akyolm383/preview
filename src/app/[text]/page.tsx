@@ -2,6 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Copy, Download, ExternalLink, Sparkles } from "lucide-react";
 import ClientDynamicView from "./ClientDynamicView";
+import { formatTurkishText } from "@/lib/turkish";
+
+function safeDecode(val: string): string {
+  try {
+    return decodeURIComponent(val);
+  } catch {
+    return val;
+  }
+}
 
 type Props = {
   params: Promise<{ text: string }>;
@@ -15,21 +24,26 @@ export async function generateMetadata({
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
   // Convert '+' syntax to space
-  const title = decodeURIComponent(resolvedParams.text || "").replace(/\+/g, " ").trim();
+  const rawTitle = safeDecode(resolvedParams.text || "").replace(/\+/g, " ").trim();
 
   // Subtitle parsing: supports /siktir?siktirme or /siktir?sub=siktirme
-  let subtitle = "";
+  let rawSubtitle = "";
   if (resolvedSearchParams.sub) {
-    subtitle = String(resolvedSearchParams.sub);
+    rawSubtitle = String(resolvedSearchParams.sub);
   } else if (resolvedSearchParams.subtitle) {
-    subtitle = String(resolvedSearchParams.subtitle);
+    rawSubtitle = String(resolvedSearchParams.subtitle);
   } else {
     const keys = Object.keys(resolvedSearchParams);
-    if (keys.length > 0 && keys[0] !== "theme") {
-      subtitle = keys[0];
+    if (keys.length > 0 && keys[0] !== "theme" && keys[0] !== "tr") {
+      rawSubtitle = keys[0];
     }
   }
-  subtitle = decodeURIComponent(subtitle).replace(/\+/g, " ").trim();
+  rawSubtitle = safeDecode(rawSubtitle).replace(/\+/g, " ").trim();
+
+  // Format Turkish characters (support ASCII shortcuts like s_ -> ş, c_ -> ç, or ?tr)
+  const isTr = resolvedSearchParams.tr !== undefined;
+  const title = formatTurkishText(rawTitle, isTr);
+  const subtitle = formatTurkishText(rawSubtitle, isTr);
 
   const theme = (resolvedSearchParams.theme as string) || "blurple";
   const themeHex =
@@ -39,8 +53,8 @@ export async function generateMetadata({
       ? "#57F287"
       : "#5865F2";
 
-  const cleanSlug = encodeURIComponent(title.replace(/\s+/g, "+"));
-  const cleanSub = subtitle ? encodeURIComponent(subtitle.replace(/\s+/g, "+")) : "";
+  const cleanSlug = encodeURIComponent(rawTitle.replace(/\s+/g, "+"));
+  const cleanSub = rawSubtitle ? encodeURIComponent(rawSubtitle.replace(/\s+/g, "+")) : "";
   const currentCanonicalUrl = `https://p.ramazanakyol.me/${cleanSlug}${cleanSub ? `?${cleanSub}` : ""}`;
   const absoluteOgImageUrl = `https://p.ramazanakyol.me/og.png?title=${encodeURIComponent(title)}${
     subtitle ? `&sub=${encodeURIComponent(subtitle)}` : ""
@@ -93,20 +107,24 @@ export default async function DynamicTextPage({
 }: Props) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  const title = decodeURIComponent(resolvedParams.text || "").replace(/\+/g, " ").trim();
+  const rawTitle = safeDecode(resolvedParams.text || "").replace(/\+/g, " ").trim();
 
-  let subtitle = "";
+  let rawSubtitle = "";
   if (resolvedSearchParams.sub) {
-    subtitle = String(resolvedSearchParams.sub);
+    rawSubtitle = String(resolvedSearchParams.sub);
   } else if (resolvedSearchParams.subtitle) {
-    subtitle = String(resolvedSearchParams.subtitle);
+    rawSubtitle = String(resolvedSearchParams.subtitle);
   } else {
     const keys = Object.keys(resolvedSearchParams);
-    if (keys.length > 0 && keys[0] !== "theme") {
-      subtitle = keys[0];
+    if (keys.length > 0 && keys[0] !== "theme" && keys[0] !== "tr") {
+      rawSubtitle = keys[0];
     }
   }
-  subtitle = decodeURIComponent(subtitle).replace(/\+/g, " ").trim();
+  rawSubtitle = safeDecode(rawSubtitle).replace(/\+/g, " ").trim();
+
+  const isTr = resolvedSearchParams.tr !== undefined;
+  const title = formatTurkishText(rawTitle, isTr);
+  const subtitle = formatTurkishText(rawSubtitle, isTr);
 
   const theme = (resolvedSearchParams.theme as string) || "blurple";
   const ogImageUrl = `/og.png?title=${encodeURIComponent(title)}${

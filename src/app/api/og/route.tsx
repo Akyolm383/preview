@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import { formatTurkishText } from "@/lib/turkish";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,11 @@ export async function GET(req: NextRequest) {
     // Convert '+' signs to spaces for clean URL syntax
     title = title.replace(/\+/g, " ").trim();
     subtitle = subtitle.replace(/\+/g, " ").trim();
+
+    // Check if ?tr flag is set or apply ASCII-to-Turkish shortcuts (s_ -> ş, c_ -> ç, etc.)
+    const isTr = searchParams.get("tr") !== null || searchParams.has("tr");
+    title = formatTurkishText(title, isTr);
+    subtitle = formatTurkishText(subtitle, isTr);
 
     // Theme color mapping
     let accentColor = "#5865F2"; // Blurple

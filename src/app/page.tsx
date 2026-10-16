@@ -13,6 +13,7 @@ import {
   Share2,
   MessageCircle,
 } from "lucide-react";
+import { formatTurkishText } from "@/lib/turkish";
 
 export default function Home() {
   const [slugText, setSlugText] = useState("siktir");
@@ -57,13 +58,17 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const isTr = slugText.includes("?tr") || subtitle.includes("?tr");
+  const renderedTitle = formatTurkishText(slugText || "siktir", isTr);
+  const renderedSubtitle = formatTurkishText(subtitle, isTr);
+
   const presetList = [
-    { text: "siktir", sub: "" },
+    { text: "s_eker", sub: "" },
+    { text: "c_ok+g_uzel", sub: "harika" },
+    { text: "anlad_ik", sub: "kral" },
+    { text: "bos+yapma", sub: "lutfen?tr" },
     { text: "siktir", sub: "siktirme" },
     { text: "tamam abi", sub: "anladık" },
-    { text: "aynen knk", sub: "aynen öyle" },
-    { text: "helal olsun", sub: "şaşırtmadı" },
-    { text: "404 not found", sub: "sayfa bulunamadı" },
   ];
 
   const spineColor =
@@ -264,6 +269,28 @@ export default function Home() {
                   </button>
                 </div>
               </div>
+
+              {/* Instagram & Turkish Characters Guide Tip */}
+              <div className="p-3 rounded bg-surface-card/60 border border-surface-border/60 text-[11px] text-text-sec flex items-start gap-2.5">
+                <span className="text-blurple font-bold text-sm leading-none">💡</span>
+                <div className="leading-relaxed">
+                  <span className="font-semibold text-white">Instagram & Mobil Klavye İpucu:</span>
+                  <p className="mt-0.5 text-text-muted">
+                    Instagram uygulamasında elle yazarken Türkçe harfler (<code>ş, ç, ğ, ı, ö, ü</code>) linki böler. Bunun yerine şu pratik ASCII kısayollarını kullanabilirsiniz:
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5 font-mono text-[10px] text-emerald">
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">s_ &rarr; ş</span>
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">c_ &rarr; ç</span>
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">g_ &rarr; ğ</span>
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">i_ &rarr; ı</span>
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">o_ &rarr; ö</span>
+                    <span className="bg-surface-1 px-1.5 py-0.5 rounded border border-white/5">u_ &rarr; ü</span>
+                  </div>
+                  <p className="mt-1 text-[10px] text-text-gutter">
+                    Örn: <code>/s_eker</code> yazdığınızda kartta <strong>şeker</strong> olarak çıkar ve Instagram linki asla kesmez!
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Performance status */}
@@ -366,11 +393,11 @@ export default function Home() {
                       </p>
 
                       <h3 className="text-base font-bold text-white mb-0.5">
-                        {slugText || "siktir"}
+                        {renderedTitle || "siktir"}
                       </h3>
 
-                      {subtitle && (
-                        <p className="text-xs text-text-sec mb-2">{subtitle}</p>
+                      {renderedSubtitle && (
+                        <p className="text-xs text-text-sec mb-2">{renderedSubtitle}</p>
                       )}
 
                       <div className="mt-2 rounded overflow-hidden border border-white/10 bg-black aspect-[1200/630] relative w-full group">
@@ -416,11 +443,11 @@ export default function Home() {
                     </div>
                     <div className="p-2.5">
                       <h4 className="text-sm font-bold text-white leading-tight">
-                        {slugText || "siktir"}
+                        {renderedTitle || "siktir"}
                       </h4>
-                      {subtitle && (
+                      {renderedSubtitle && (
                         <p className="text-xs text-white/80 line-clamp-1 mt-0.5">
-                          {subtitle}
+                          {renderedSubtitle}
                         </p>
                       )}
                       <p className="text-[11px] text-[#25D366] font-mono mt-1">
@@ -481,11 +508,11 @@ export default function Home() {
                       p.ramazanakyol.me
                     </p>
                     <h4 className="text-sm font-semibold text-white mt-0.5 line-clamp-1">
-                      {slugText || "siktir"}
+                      {renderedTitle || "siktir"}
                     </h4>
-                    {subtitle && (
+                    {renderedSubtitle && (
                       <p className="text-xs text-[#71767b] line-clamp-1 mt-0.5">
-                        {subtitle}
+                        {renderedSubtitle}
                       </p>
                     )}
                   </div>

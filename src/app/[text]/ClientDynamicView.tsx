@@ -165,12 +165,12 @@ export default function ClientDynamicView({
             {copied ? (
               <>
                 <Check className="w-4 h-4" />
-                <span>Link Kopyalandı! (Discord&apos;a Yapıştır)</span>
+                <span>Link Kopyalandı!</span>
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                <span>Discord Linkini Kopyala</span>
+                <span>Paylaşım Linkini Kopyala</span>
               </>
             )}
           </button>
