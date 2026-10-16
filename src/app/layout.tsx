@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     locale: "tr_TR",
     images: [
       {
-        url: "https://p.ramazanakyol.me/api/og?title=p.ramazanakyol.me&subtitle=Universal+Social+Preview",
+        url: "https://p.ramazanakyol.me/og.png?title=p.ramazanakyol.me&subtitle=Universal+Social+Preview",
         width: 1200,
         height: 630,
         alt: "p.ramazanakyol.me Preview",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "p.ramazanakyol.me — Universal Social OG Generator",
     description: "Generate instant dynamic preview embeds for Discord, WhatsApp, X & Telegram with custom text.",
-    images: ["https://p.ramazanakyol.me/api/og?title=p.ramazanakyol.me&subtitle=Universal+Social+Preview"],
+    images: ["https://p.ramazanakyol.me/og.png?title=p.ramazanakyol.me&subtitle=Universal+Social+Preview"],
   },
 };
 

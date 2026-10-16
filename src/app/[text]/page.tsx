@@ -42,7 +42,7 @@ export async function generateMetadata({
   const cleanSlug = encodeURIComponent(title.replace(/\s+/g, "+"));
   const cleanSub = subtitle ? encodeURIComponent(subtitle.replace(/\s+/g, "+")) : "";
   const currentCanonicalUrl = `https://p.ramazanakyol.me/${cleanSlug}${cleanSub ? `?${cleanSub}` : ""}`;
-  const absoluteOgImageUrl = `https://p.ramazanakyol.me/api/og?title=${encodeURIComponent(title)}${
+  const absoluteOgImageUrl = `https://p.ramazanakyol.me/og.png?title=${encodeURIComponent(title)}${
     subtitle ? `&sub=${encodeURIComponent(subtitle)}` : ""
   }&theme=${theme}`;
 
@@ -76,6 +76,13 @@ export async function generateMetadata({
       description: subtitle || `Dynamic preview embed for "${title}"`,
       images: [absoluteOgImageUrl],
     },
+    other: {
+      "twitter:image:src": absoluteOgImageUrl,
+      "twitter:domain": "p.ramazanakyol.me",
+      "twitter:url": currentCanonicalUrl,
+      "og:image:url": absoluteOgImageUrl,
+      "og:image:secure_url": absoluteOgImageUrl,
+    },
     themeColor: themeHex,
   };
 }
@@ -102,7 +109,7 @@ export default async function DynamicTextPage({
   subtitle = decodeURIComponent(subtitle).replace(/\+/g, " ").trim();
 
   const theme = (resolvedSearchParams.theme as string) || "blurple";
-  const ogImageUrl = `/api/og?title=${encodeURIComponent(title)}${
+  const ogImageUrl = `/og.png?title=${encodeURIComponent(title)}${
     subtitle ? `&sub=${encodeURIComponent(subtitle)}` : ""
   }&theme=${theme}`;
 

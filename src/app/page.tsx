@@ -47,7 +47,7 @@ export default function Home() {
   const fullShareUrl = `https://${domain}${shareablePath}`;
 
   // Image source for real-time preview (pass formatted string so + becomes space in preview)
-  const liveOgImageUrl = `/api/og?title=${cleanSlug}${
+  const liveOgImageUrl = `/og.png?title=${cleanSlug}${
     cleanSubtitle ? `&sub=${cleanSubtitle}` : ""
   }&theme=${theme}`;
 
