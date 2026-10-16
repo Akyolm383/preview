@@ -41,6 +41,10 @@
    - `src/app/[text]/page.tsx`: Güvenli URL çözümleme (`safeDecode`) ve arama motoru meta etiketleri.
    - `src/app/[text]/ClientDynamicView.tsx`: Evrensel paylaşım arayüzü ve görsel indirme seçeneği.
 
+5. **Vercel Web Analytics Entegrasyonu (`@vercel/analytics`):**
+   - `@vercel/analytics/react` paketi kuruldu ve `src/app/layout.tsx` kök şablonuna bağlandı.
+   - Ziyaretçi sayısı, sayfa görüntülemeleri, ülke/cihaz dağılımları Vercel Dashboard üzerinden anlık izlenebilir hale getirildi.
+
 ---
 
 ## 📋 3. Sıradaki Adım
