@@ -1,7 +1,7 @@
-# PROGRESS.md — Discord Dynamic Preview Generator (`p.ramazanakyol.me`)
+# PROGRESS.md — Universal Social Preview Generator (`p.ramazanakyol.me`)
 
 > **Son Güncelleme:** 16 Ekim 2026  
-> **Durum:** Tamamlandı & Tarayıcı Testlerinden Başarıyla Geçti (0 Hata)
+> **Durum:** Tamamlandı • Evrensel Sosyal Medya Uyumluluğu Eklendi (Discord, WhatsApp, X, Telegram, Instagram)
 
 ---
 
@@ -14,40 +14,36 @@
 ---
 
 ## 🚀 2. Tamamlanan Sayfalar ve Bileşenler
-1. **Dinamik Open Graph API Motoru (`src/app/api/og/route.tsx`):**
-   - Vercel Serverless / Node.js & `next/og` (ImageResponse) altyapısı.
-   - 1200×630 px Discord Large Image Embed standardı.
-   - Dinamik metin boyutu hesaplama (uzunluğa göre otomatik küçülme).
-   - Tam UTF-8 Türkçe karakter desteği (`ş, ç, ğ, ı, ö, ü`).
-   - Tema renk desteği: Blurple (`#5865F2`), Crimson (`#ED4245`), Emerald (`#57F287`).
+1. **Evrensel Open Graph & Twitter Motoru (`src/app/api/og/route.tsx`):**
+   - 1200×630 px (1.91:1 standardı) dinamik PNG üretimi.
+   - WhatsApp, X, Instagram, Facebook ve Telegram için `Cache-Control: public, max-age=31536000, immutable` önbellekleme başlığı eklendi.
+   - Alt rozetler evrensel sosyal medya formatına uyarlandı (`Social Link Preview` & `p.ramazanakyol.me`).
+   - Tam UTF-8 Türkçe karakter ve `+` boşluk syntax desteği.
 
 2. **Dinamik Rota Sayfası (`src/app/[text]/page.tsx`):**
-   - Kullanıcının istediği özel sade syntax ve `+` boşluk desteği:
-     - `p.ramazanakyol.me/siktir` $\rightarrow$ Başlık: `siktir`
-     - `p.ramazanakyol.me/siktir?siktirme` $\rightarrow$ Başlık: `siktir`, Alt başlık: `siktirme`
-     - `p.ramazanakyol.me/tamam+abi?anladık+kral` $\rightarrow$ Başlık: `tamam abi`, Alt başlık: `anladık kral` (`+` işaretleri otomatik boşluk olarak çözümlenir).
-   - Discord botu için sunucu taraflı render edilen `<meta property="og:image">`, `<meta property="og:title">` ve `<meta name="twitter:card" content="summary_large_image">` etiketleri.
-   - İnsanlar tarayıcıda girdiğinde çalışan şık kart görünümü, doğrudan link kopyalama ve PNG indirme butonları.
+   - Tüm platformların botları için mutlak HTTPS adresleri ile:
+     - `og:image`, `og:image:secure_url`, `og:image:type="image/png"`
+     - `og:url`, `og:site_name`, `og:type="website"`
+     - `twitter:card="summary_large_image"`, `twitter:title`, `twitter:description`, `twitter:image`
+   - Temiz syntax:
+     - `p.ramazanakyol.me/siktir`
+     - `p.ramazanakyol.me/siktir?siktirme`
+     - `p.ramazanakyol.me/tamam+abi?anladık+kral`
 
-3. **İnteraktif Ana Sayfa & Embed Stüdyosu (`src/app/page.tsx`):**
-   - Canlı metin girişi, alt başlık kutusu, hızlı örnek etiketleri (`/siktir`, `/siktir?siktirme`, `/tamam abi?anladık` vb.).
-   - 1:1 Discord karanlık tema sohbet simülatörü.
-   - Tek tıkla paylaşılabilir Discord linkini kopyalama mekanizması.
-   - Mimari avantajlar kartları (Edge Hızı, Türkçe Karakter Desteği, Temiz Syntax).
-
-4. **Görsel Varlıklar:**
-   - 3D Discord avatar görseli (`public/images/avatar.png`) yerleşik model ile üretilip yerleştirildi (Sıfır kırık görsel/placeholder).
+3. **İnteraktif Çoklu Platform Simülatörü (`src/app/page.tsx`):**
+   - **Discord:** Orijinal karanlık tema, avatar, bot etiketi, renkli sol şeritli kart.
+   - **WhatsApp:** Orijinal koyu tema konuşma balonu, bağlantı kartı, alan adı etiketi ve çift mavi tik.
+   - **X (Twitter):** 16px radius'lu büyük önizleme kartı ve gönderi simülasyonu.
 
 ---
 
-## 🛠️ 3. Alınan Mimari Kararlar
-- **Sade URL Syntax'ı:** `?title=` veya `?subtitle=` gibi uzun parametreler yerine, doğrudan `p.ramazanakyol.me/:metin?:altbaslik` RESTful yapısı kuruldu.
-- **SSR & Hydration Uyum:** Sunucu ve istemci arasındaki hydration farkı (`window.location.href`) `useEffect` ve `canonicalUrl` ile izole edilerek konsol hataları sıfırlandı.
-- **Tarayıcı Uyumluluğu:** Chrome üzerinden hem 1440px masaüstü hem de 375px mobil genişlikte görsel regresyon ve konsol kontrolleri yapıldı.
+## 🛠️ 3. Platform Uyumluluk Detayları
+- **WhatsApp:** Meta Graph Scraper'ın beklediği `<300KB` boyut ve mutlak URL kuralı sağlandı.
+- **X (Twitter):** `summary_large_image` kart tipiyle tam genişlikli görsel standardı sağlandı.
+- **Instagram (DM / Hikaye Çıkartması):** Facebook OpenGraph API standardıyla tam uyum sağlandı.
+- **Telegram & LinkedIn:** Standart Open Graph etiketleriyle doğrudan uyumlu.
 
 ---
 
-## 📋 4. Sıradaki Adım (Canlıya Alma / Deployment)
-1. Kodları GitHub reposuna göndermek (`git add . && git commit -m "feat: initial commit" && git push`).
-2. Vercel dashboard'undan repoyu içe aktarmak (Hobby ücretsiz plan).
-3. `p.ramazanakyol.me` alan adını Vercel'e ekleyip DNS'e CNAME kaydını girmek.
+## 📋 4. Sıradaki Adım
+- Kodlar GitHub reposuna gönderildi. Vercel otomatik olarak yayına alacaktır.

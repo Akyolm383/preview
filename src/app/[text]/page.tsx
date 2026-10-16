@@ -39,30 +39,42 @@ export async function generateMetadata({
       ? "#57F287"
       : "#5865F2";
 
-  const ogImageUrl = `/api/og?title=${encodeURIComponent(title)}${
+  const cleanSlug = encodeURIComponent(title.replace(/\s+/g, "+"));
+  const cleanSub = subtitle ? encodeURIComponent(subtitle.replace(/\s+/g, "+")) : "";
+  const currentCanonicalUrl = `https://p.ramazanakyol.me/${cleanSlug}${cleanSub ? `?${cleanSub}` : ""}`;
+  const absoluteOgImageUrl = `https://p.ramazanakyol.me/api/og?title=${encodeURIComponent(title)}${
     subtitle ? `&sub=${encodeURIComponent(subtitle)}` : ""
   }&theme=${theme}`;
 
   return {
     title: `${title}${subtitle ? ` — ${subtitle}` : ""} | p.ramazanakyol.me`,
-    description: subtitle || `Discord Dynamic Preview for "${title}"`,
+    description: subtitle || `Dynamic preview for "${title}"`,
+    alternates: {
+      canonical: currentCanonicalUrl,
+    },
     openGraph: {
       title: title,
-      description: subtitle || "Dynamic Discord embed generated at p.ramazanakyol.me",
+      description: subtitle || `Dynamic preview embed for "${title}"`,
+      url: currentCanonicalUrl,
+      siteName: "p.ramazanakyol.me",
+      type: "website",
+      locale: "tr_TR",
       images: [
         {
-          url: ogImageUrl,
+          url: absoluteOgImageUrl,
+          secureUrl: absoluteOgImageUrl,
           width: 1200,
           height: 630,
           alt: title,
+          type: "image/png",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: title,
-      description: subtitle || "Dynamic Discord embed generated at p.ramazanakyol.me",
-      images: [ogImageUrl],
+      description: subtitle || `Dynamic preview embed for "${title}"`,
+      images: [absoluteOgImageUrl],
     },
     themeColor: themeHex,
   };

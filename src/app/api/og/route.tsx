@@ -123,7 +123,7 @@ export async function GET(req: NextRequest) {
                   textTransform: "uppercase",
                 }}
               >
-                Discord Link Preview
+                Social Link Preview
               </span>
             </div>
           </div>
@@ -192,7 +192,7 @@ export async function GET(req: NextRequest) {
                 fontWeight: 500,
               }}
             >
-              Edge Generated • Dynamic Embed
+              Universal Embed • Edge Rendered
             </span>
             <span
               style={{
@@ -201,7 +201,7 @@ export async function GET(req: NextRequest) {
                 fontWeight: 700,
               }}
             >
-              discord.gg/embed
+              p.ramazanakyol.me
             </span>
           </div>
         </div>
@@ -209,6 +209,10 @@ export async function GET(req: NextRequest) {
       {
         width: 1200,
         height: 630,
+        headers: {
+          "Content-Type": "image/png",
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
       }
     );
   } catch (e: unknown) {
